@@ -16,6 +16,6 @@ body {
 }
 
 body, input, textarea, button {
-  font-family: "Roboto", sans-serif;
+  font-family: ${(props) => props.theme.typography.roboto}, sans-serif;
 }
 `
