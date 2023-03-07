@@ -13,9 +13,11 @@ export const GlobalStyle = createGlobalStyle`
 
 body {
   -webkit-font-smoothing: antialiased;
+  line-height: 130%normal;
 }
 
 body, input, textarea, button {
   font-family: ${(props) => props.theme.typography.roboto}, sans-serif;
 }
+
 `
