@@ -2,18 +2,13 @@ import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
   background: #fafafa;
-  height: 104px;
+  height: 6.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  img {
-    margin-left: 160px;
-  }
 `
 
 export const LocationAndCartContainer = styled.div`
-  margin-right: 160px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -28,9 +23,9 @@ export const LocationAndCartContainer = styled.div`
 
     height: 2.375rem;
     gap: 4px;
-    padding: 0 8px;
+    padding: 0 0.5rem;
 
-    font-size: 14px;
+    font-size: 0.875rem;
     border-radius: 6px;
   }
 

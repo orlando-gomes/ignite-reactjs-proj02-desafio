@@ -1,43 +1,49 @@
-import { ShoppingCart } from '@phosphor-icons/react'
-import { Header } from '../../components/Header'
+import { CoffeeItem } from './CoffeeItem'
+import { Intro } from './Intro'
+import { CoffeeList, Filter, HomeContainer } from './styles'
+import traditionalCoffee from '../../assets/coffees/traditional-coffee.svg'
+import { coffeeListData } from '../../data/CoffeeData'
 
 export function Home() {
-  return (
-    <>
-      <Header />
-      <main>
-        <section>
-          <article>
-            <div>Encontre o café perfeito para qualquer hora do dia</div>
-            <div>
-              Com o Coffee Delivery você recebe o seu café onde estiver, a
-              qualquer hora
-            </div>
-          </article>
-          <article>
-            <div>Compra simples e segura</div>
-            <div>Embalagem mantém o café intacto</div>
-            <div>Entrega rápida e rastreada</div>
-            <div>O café chega fresquinho até você</div>
-          </article>
-          <img src="teste" alt="teste" />
-        </section>
+  const coffee = {
+    id: 1,
+    image: traditionalCoffee,
+    tagList: ['tradicional', 'alcoólico', 'gelado'],
+    title: 'Expresso Tradicional',
+    description: 'O tradicional café feito com água quente e grãos moídos',
+    price: 9.9,
+  }
 
-        <section>
-          <header>Nossos cafés</header>
-          <div>
-            <img src="" alt="café" />
-            <div>Tradicional</div>
-            <div>Expresso Tradicional</div>
-            <div>O tradicional café feito com água quente e grãos moídos</div>
-            <div>
-              <span>R$ 9,90</span>
-              <span>-1+</span>
-              <ShoppingCart size={22} weight="fill" />
-            </div>
-          </div>
-        </section>
-      </main>
-    </>
+  const coffees = coffeeListData
+
+  return (
+    <HomeContainer>
+      <Intro />
+
+      <section>
+        <header>
+          <span>Nossos cafés</span>
+          <Filter>
+            <button>tradicional</button>
+            <button>especial</button>
+            <button>com leite</button>
+            <button>alcoólico</button>
+            <button>gelado</button>
+          </Filter>
+        </header>
+        <CoffeeList>
+          {coffees.map((coffee) => (
+            <CoffeeItem
+              key={coffee.id}
+              image={coffee.image}
+              tagList={coffee.tagList}
+              title={coffee.title}
+              description={coffee.description}
+              price={coffee.price}
+            />
+          ))}
+        </CoffeeList>
+      </section>
+    </HomeContainer>
   )
 }
