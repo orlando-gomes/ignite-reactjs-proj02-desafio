@@ -148,10 +148,8 @@ function getAvailableTags() {
         auxiliarArray.push(listItem)
       }
     })
-    // if(auxuliarArray.indexOf(coffeeData.))
   })
 
-  // return ['tradicional', 'gelado', 'com leite', 'especial', 'alcoólico']
   return auxiliarArray
 }
 

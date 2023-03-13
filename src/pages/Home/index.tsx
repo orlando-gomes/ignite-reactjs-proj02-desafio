@@ -91,6 +91,7 @@ export function Home() {
           {showedCoffees.map((coffee) => (
             <CoffeeItem
               key={coffee.id}
+              id={coffee.id}
               image={coffee.image}
               tagList={coffee.tagList}
               title={coffee.title}
