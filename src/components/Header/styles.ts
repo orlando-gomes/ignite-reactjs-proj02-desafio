@@ -29,7 +29,7 @@ export const LocationAndCartContainer = styled.div`
     border-radius: 6px;
   }
 
-  div + div {
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,6 +38,9 @@ export const LocationAndCartContainer = styled.div`
     width: 2.375rem;
     background-color: ${(props) => props.theme.color['yellow-light']};
     color: ${(props) => props.theme.color['yellow-dark']};
+    border: none;
     border-radius: 6px;
+
+    cursor: pointer;
   }
 `

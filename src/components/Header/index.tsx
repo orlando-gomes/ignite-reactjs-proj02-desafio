@@ -12,9 +12,9 @@ export function Header() {
           <MapPin size={22} weight="fill" />
           <span>Porto Alegre, RS</span>
         </div>
-        <div>
+        <button title="Ir para o carrinho">
           <ShoppingCart size={22} weight="fill" />
-        </div>
+        </button>
       </LocationAndCartContainer>
     </HeaderContainer>
   )

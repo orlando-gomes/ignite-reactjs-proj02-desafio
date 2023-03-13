@@ -55,7 +55,7 @@ export function CoffeeItem({
               <Plus size={14} weight="bold" />
             </AmountButton>
           </Amount>
-          <CartButton>
+          <CartButton title="Adicionar ao carrinho">
             <ShoppingCart size={22} weight="fill" />
           </CartButton>
         </span>
