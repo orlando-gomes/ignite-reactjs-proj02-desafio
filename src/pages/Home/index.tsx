@@ -1,6 +1,6 @@
 import { CoffeeItem } from './CoffeeItem'
 import { Intro } from './Intro'
-import { CoffeeList, Filter, HomeContainer } from './styles'
+import { CoffeeList, Filter, FilterButton, HomeContainer } from './styles'
 import {
   CoffeeInterface,
   coffeeListData,
@@ -9,11 +9,62 @@ import {
 import { useEffect, useState } from 'react'
 
 export function Home() {
-  const [coffees, setCoffees] = useState<CoffeeInterface[]>([])
+  const [showedCoffees, setShowedCoffees] = useState<CoffeeInterface[]>([])
+
+  const [filtersInPlace, setFiltersInPlace] = useState<string[]>([])
+
+  function applyToCoffeeList(filters: string[]): CoffeeInterface[] {
+    let remainingShowedCoffees = coffeeListData
+    if (filters.length > 0) {
+      filters.forEach((filter) => {
+        remainingShowedCoffees = remainingShowedCoffees.filter((coffee) => {
+          if (coffee.tagList.indexOf(filter) > -1) {
+            return true
+          }
+          return false
+        })
+      })
+    }
+    return remainingShowedCoffees
+  }
 
   useEffect(() => {
-    setCoffees(coffeeListData)
-  }, [])
+    const remainingShowedCoffees = applyToCoffeeList(filtersInPlace)
+    setShowedCoffees(remainingShowedCoffees)
+  }, [filtersInPlace])
+
+  function toggleFilterEffect(filterTag: string) {
+    const indexTag = filtersInPlace.indexOf(filterTag)
+    const filterTagNotActive = indexTag === -1
+
+    if (filterTagNotActive) {
+      const aux = [...filtersInPlace, filterTag]
+      setFiltersInPlace(aux)
+    } else {
+      const remainingFilters = [...filtersInPlace]
+      remainingFilters.splice(indexTag, 1)
+      setFiltersInPlace(remainingFilters)
+    }
+  }
+
+  // const memorizedFilters = useMemo(
+  //   () => (
+  //     <Filter>
+  //       {availableTags.map((availableTag) => (
+  //         <FilterButton
+  //           key={availableTags.indexOf(availableTag)}
+  //           onClick={() => {
+  //             toggleFilterEffect(availableTag)
+  //           }}
+  //           isActive={filtersInPlace.indexOf(availableTag) !== -1}
+  //         >
+  //           {availableTag}
+  //         </FilterButton>
+  //       ))}
+  //     </Filter>
+  //   ),
+  //   [filtersInPlace, toggleFilterEffect],
+  // )
 
   return (
     <HomeContainer>
@@ -24,14 +75,20 @@ export function Home() {
           <span>Nossos cafés</span>
           <Filter>
             {availableTags.map((availableTag) => (
-              <button key={availableTags.indexOf(availableTag)}>
+              <FilterButton
+                key={availableTags.indexOf(availableTag)}
+                onClick={() => {
+                  toggleFilterEffect(availableTag)
+                }}
+                isActive={filtersInPlace.indexOf(availableTag) !== -1}
+              >
                 {availableTag}
-              </button>
+              </FilterButton>
             ))}
           </Filter>
         </header>
         <CoffeeList>
-          {coffees.map((coffee) => (
+          {showedCoffees.map((coffee) => (
             <CoffeeItem
               key={coffee.id}
               image={coffee.image}
