@@ -1,20 +1,19 @@
 import { CoffeeItem } from './CoffeeItem'
 import { Intro } from './Intro'
 import { CoffeeList, Filter, HomeContainer } from './styles'
-import traditionalCoffee from '../../assets/coffees/traditional-coffee.svg'
-import { coffeeListData } from '../../data/CoffeeData'
+import {
+  CoffeeInterface,
+  coffeeListData,
+  availableTags,
+} from '../../data/CoffeeData'
+import { useEffect, useState } from 'react'
 
 export function Home() {
-  const coffee = {
-    id: 1,
-    image: traditionalCoffee,
-    tagList: ['tradicional', 'alcoólico', 'gelado'],
-    title: 'Expresso Tradicional',
-    description: 'O tradicional café feito com água quente e grãos moídos',
-    price: 9.9,
-  }
+  const [coffees, setCoffees] = useState<CoffeeInterface[]>([])
 
-  const coffees = coffeeListData
+  useEffect(() => {
+    setCoffees(coffeeListData)
+  }, [])
 
   return (
     <HomeContainer>
@@ -24,11 +23,11 @@ export function Home() {
         <header>
           <span>Nossos cafés</span>
           <Filter>
-            <button>tradicional</button>
-            <button>especial</button>
-            <button>com leite</button>
-            <button>alcoólico</button>
-            <button>gelado</button>
+            {availableTags.map((availableTag) => (
+              <button key={availableTags.indexOf(availableTag)}>
+                {availableTag}
+              </button>
+            ))}
           </Filter>
         </header>
         <CoffeeList>

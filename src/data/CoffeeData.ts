@@ -138,3 +138,21 @@ export const coffeeListData: CoffeeInterface[] = [
     price: 9.9,
   },
 ]
+
+function getAvailableTags() {
+  const auxiliarArray: string[] = []
+
+  coffeeListData.forEach((coffeeData) => {
+    coffeeData.tagList.forEach((listItem) => {
+      if (auxiliarArray.indexOf(listItem) === -1) {
+        auxiliarArray.push(listItem)
+      }
+    })
+    // if(auxuliarArray.indexOf(coffeeData.))
+  })
+
+  // return ['tradicional', 'gelado', 'com leite', 'especial', 'alcoólico']
+  return auxiliarArray
+}
+
+export const availableTags = getAvailableTags()
