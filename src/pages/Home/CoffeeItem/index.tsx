@@ -1,5 +1,6 @@
 import { Minus, Plus, ShoppingCart } from '@phosphor-icons/react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../../contexts/CartContext'
 
 import {
   Amount,
@@ -31,6 +32,8 @@ export function CoffeeItem({
   description,
   price,
 }: CoffeeItemInterface) {
+  const { addToCart } = useContext(CartContext)
+
   const [amount, setAmount] = useState(1)
 
   const formattedPrice = price.toLocaleString('pt-BR', {
@@ -43,15 +46,13 @@ export function CoffeeItem({
   }
 
   function handleDecreaseAmount() {
-    const variavel = 5
-    console.log(variavel)
     if (amount > 1) {
       setAmount(amount - 1)
     }
   }
 
   function handleAddToCart(itemId: number) {
-    console.log(itemId)
+    addToCart({ id: itemId, amount })
   }
 
   return (
