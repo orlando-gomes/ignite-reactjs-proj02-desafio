@@ -15,11 +15,11 @@ import hawaiian from '../assets/coffees/hawaiian.svg'
 import arabian from '../assets/coffees/arabian.svg'
 import irish from '../assets/coffees/irish.svg'
 
-export interface CoffeeInterface extends CoffeeItemInterface {
-  id: number
-}
+// export interface CoffeeInterfaces extends CoffeeItemInterface {
+//   id: number
+// }
 
-export const coffeeListData: CoffeeInterface[] = [
+export const coffeeListData: CoffeeItemInterface[] = [
   {
     id: 1,
     image: traditionalCoffee,

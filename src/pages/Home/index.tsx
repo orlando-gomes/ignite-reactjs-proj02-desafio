@@ -2,18 +2,18 @@ import { CoffeeItem } from './CoffeeItem'
 import { Intro } from './Intro'
 import { CoffeeList, Filter, FilterButton, HomeContainer } from './styles'
 import {
-  CoffeeInterface,
+  CoffeeItemInterface,
   coffeeListData,
   availableTags,
 } from '../../data/CoffeeData'
 import { useEffect, useState } from 'react'
 
 export function Home() {
-  const [showedCoffees, setShowedCoffees] = useState<CoffeeInterface[]>([])
+  const [showedCoffees, setShowedCoffees] = useState<CoffeeItemInterface[]>([])
 
   const [filtersInPlace, setFiltersInPlace] = useState<string[]>([])
 
-  function applyToCoffeeList(filters: string[]): CoffeeInterface[] {
+  function applyToCoffeeList(filters: string[]): CoffeeItemInterface[] {
     let remainingShowedCoffees = coffeeListData
     if (filters.length > 0) {
       filters.forEach((filter) => {

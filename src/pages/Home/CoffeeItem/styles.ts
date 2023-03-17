@@ -50,6 +50,7 @@ export const Description = styled.div`
 
 export const Panel = styled.div`
   width: 100%;
+  height: 2.375rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,6 +58,10 @@ export const Panel = styled.div`
   & > span:last-of-type {
     display: flex;
     align-items: center;
+
+    & > div {
+      height: 2.375rem;
+    }
   }
 `
 
@@ -74,35 +79,6 @@ export const Price = styled.span`
   color: ${(props) => props.theme.color['base-text']};
   font-size: 1.5rem;
   font-family: 'Baloo 2';
-`
-
-export const Amount = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => props.theme.color['base-button']};
-
-  width: 4.5rem;
-  height: 2.375rem;
-
-  border-radius: 6px;
-
-  span {
-    font-size: 1rem;
-    color: ${(props) => props.theme.color['base-title']};
-    margin: 0 0.25rem;
-  }
-`
-
-export const AmountButton = styled(Button)`
-  background-color: transparent;
-  color: ${(props) => props.theme.color.purple};
-
-  border-radius: 6px;
-
-  &:hover {
-    color: ${(props) => props.theme.color['purple-dark']};
-  }
 `
 
 export const CartButton = styled(Button)`

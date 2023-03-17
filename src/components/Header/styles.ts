@@ -8,7 +8,11 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
 `
 
-export const LocationAndCartContainer = styled.div`
+interface LocationAndCartContainerProps {
+  cartNumberOfItems: number
+}
+
+export const LocationAndCartContainer = styled.div<LocationAndCartContainerProps>`
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -29,7 +33,7 @@ export const LocationAndCartContainer = styled.div`
     border-radius: 6px;
   }
 
-  button {
+  a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,5 +46,23 @@ export const LocationAndCartContainer = styled.div`
     border-radius: 6px;
 
     cursor: pointer;
+
+    &::after {
+      content: '${(props) => props.cartNumberOfItems}';
+      visibility: ${(props) =>
+        props.cartNumberOfItems > 0 ? 'visible' : 'hidden'};
+      float: left;
+      position: absolute;
+      margin: -2rem -2rem 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background-color: ${(props) => props.theme.color['yellow-dark']};
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      color: ${(props) => props.theme.color.white};
+    }
   }
 `

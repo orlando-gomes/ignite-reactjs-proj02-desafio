@@ -1,10 +1,9 @@
-import { Minus, Plus, ShoppingCart } from '@phosphor-icons/react'
+import { ShoppingCart } from '@phosphor-icons/react'
 import { useContext, useState } from 'react'
+import { QuantityVariator } from '../../../components/QuantityVariator'
 import { CartContext } from '../../../contexts/CartContext'
 
 import {
-  Amount,
-  AmountButton,
   CartButton,
   CoffeeItemContainer,
   CoffeeTags,
@@ -53,6 +52,7 @@ export function CoffeeItem({
 
   function handleAddToCart(itemId: number) {
     addToCart({ id: itemId, amount })
+    setAmount(1)
   }
 
   return (
@@ -69,15 +69,11 @@ export function CoffeeItem({
       <Panel>
         <Price>{formattedPrice}</Price>
         <span>
-          <Amount>
-            <AmountButton onClick={handleDecreaseAmount}>
-              <Minus size={14} weight="bold" />
-            </AmountButton>
-            <span>{amount}</span>
-            <AmountButton onClick={handleIncreaseAmount}>
-              <Plus size={14} weight="bold" />
-            </AmountButton>
-          </Amount>
+          <QuantityVariator
+            functionToIncreaseQuantity={handleIncreaseAmount}
+            functionToDecreaseQuantity={handleDecreaseAmount}
+            quantity={amount}
+          />
           <CartButton
             title="Adicionar ao carrinho"
             onClick={() => {
