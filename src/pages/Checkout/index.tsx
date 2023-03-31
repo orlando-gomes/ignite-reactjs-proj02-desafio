@@ -1,3 +1,4 @@
+import { FormEvent, useContext } from 'react'
 import {
   Bank,
   CreditCard,
@@ -5,6 +6,7 @@ import {
   MapPinLine,
   Money,
 } from '@phosphor-icons/react'
+
 import {
   AddressSection,
   AddressTopText,
@@ -22,12 +24,19 @@ import {
 } from './styles'
 
 import { ConfirmSection } from './ConfirmSection'
-import { FormEvent } from 'react'
+import { CartContext } from '../../contexts/CartContext'
+import { payType } from '../../reducers/cart/reducer'
 
 export function Checkout() {
+  const { payMethod, updatePaymentMethod } = useContext(CartContext)
+
   function handleCreateNewOrder(event: FormEvent) {
     event.preventDefault()
     console.log('Submeteu o formulário')
+  }
+
+  function handleUpdatePaymentMethod(method: payType) {
+    updatePaymentMethod(method)
   }
 
   return (
@@ -89,15 +98,33 @@ export function Checkout() {
             </div>
 
             <div>
-              <PayButton type="button" onClick={() => {}} selected={true}>
+              <PayButton
+                type="button"
+                onClick={() => {
+                  handleUpdatePaymentMethod('credit')
+                }}
+                selected={payMethod === 'credit'}
+              >
                 <CreditCard size={16} />
                 CARTÃO DE CRÉDITO
               </PayButton>
-              <PayButton type="button" onClick={() => {}} selected={false}>
+              <PayButton
+                type="button"
+                onClick={() => {
+                  handleUpdatePaymentMethod('debit')
+                }}
+                selected={payMethod === 'debit'}
+              >
                 <Bank size={16} />
                 CARTÃO DE DÉBITO
               </PayButton>
-              <PayButton type="button" onClick={() => {}} selected={false}>
+              <PayButton
+                type="button"
+                onClick={() => {
+                  handleUpdatePaymentMethod('money')
+                }}
+                selected={payMethod === 'money'}
+              >
                 <Money size={16} />
                 DINHEIRO
               </PayButton>

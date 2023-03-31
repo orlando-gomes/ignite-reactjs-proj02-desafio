@@ -1,13 +1,15 @@
 import { createContext, ReactNode, useReducer } from 'react'
 import { ActionTypes } from '../reducers/cart/actions'
-import { CartItem, cartReducer } from '../reducers/cart/reducer'
+import { CartItem, cartReducer, payType } from '../reducers/cart/reducer'
 
 interface CartContextType {
   cartItems: CartItem[]
+  payMethod: payType
   addToCart: (item: CartItem) => void
   updateCartItem: (item: CartItem) => void
   findCartItem: (item: CartItem) => CartItem | null
   deleteCartItem: (itemId: number) => void
+  updatePaymentMethod: (method: payType) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -28,9 +30,10 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         amount: 3,
       },
     ] as CartItem[],
+    payMethod: 'credit',
   })
 
-  const { cartItems } = cartState
+  const { cartItems, payMethod } = cartState
 
   function updateCartItem(item: CartItem) {
     dispatch({ type: ActionTypes.UPDATE_CART_ITEM, payload: { item } })
@@ -61,14 +64,23 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch({ type: ActionTypes.DELETE_CART_ITEM, payload: { itemId } })
   }
 
+  function updatePaymentMethod(method: payType) {
+    dispatch({
+      type: ActionTypes.UPDATE_PAYMENT_METHOD,
+      payload: { payMethod: method },
+    })
+  }
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        payMethod,
         addToCart,
         updateCartItem,
         findCartItem,
         deleteCartItem,
+        updatePaymentMethod,
       }}
     >
       {children}

@@ -176,7 +176,10 @@ export const PayButton = styled.button<PayButtonProps>`
   transition: 0.2s;
 
   &:hover {
-    background-color: ${(props) => props.theme.color['base-hover']};
+    background-color: ${(props) =>
+      props.selected
+        ? props.theme.color['purple-light']
+        : props.theme.color['base-hover']};
     color: ${(props) => props.theme.color['base-subtitle']};
   }
 
