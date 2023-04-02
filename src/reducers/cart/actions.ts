@@ -7,4 +7,6 @@ export enum ActionTypes {
   DELETE_CART_ITEM = 'DELETE_CART_ITEM',
   // eslint-disable-next-line no-unused-vars
   UPDATE_PAYMENT_METHOD = 'UPDATE_PAYMENT_METHOD',
+  // eslint-disable-next-line no-unused-vars
+  UPDATE_CLIENT_DATA = 'UPDATE_CLIENT_DATA',
 }

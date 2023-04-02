@@ -1,4 +1,9 @@
-import { FormEvent, useContext } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
+
+import { FormProvider, useForm } from 'react-hook-form'
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import {
   Bank,
   CreditCard,
@@ -27,21 +32,59 @@ import { ConfirmSection } from './ConfirmSection'
 import { CartContext } from '../../contexts/CartContext'
 import { payType } from '../../reducers/cart/reducer'
 
-export function Checkout() {
-  const { payMethod, updatePaymentMethod } = useContext(CartContext)
+const newCheckoutValidationSchema = zod.object({
+  zipCode: zod.string().min(1, 'Informe o CEP'),
+  street: zod.string().min(5, 'Informe a rua'),
+  number: zod.string().nonempty('Informe um número válido'),
+  complement: zod.string().optional(),
+  district: zod.string().nonempty('Informe um bairro'),
+  city: zod.string().nonempty('Informe uma cidade'),
+  state: zod.string().nonempty('Informe um estado'),
+})
 
-  function handleCreateNewOrder(event: FormEvent) {
-    event.preventDefault()
-    console.log('Submeteu o formulário')
+export type CheckoutFormData = zod.infer<typeof newCheckoutValidationSchema>
+
+export function Checkout() {
+  const { clientData, payMethod, updatePaymentMethod, updateClientData } =
+    useContext(CartContext)
+
+  const [formData, setFormData] = useState<CheckoutFormData>(clientData)
+
+  const newCheckoutFormMethods = useForm<CheckoutFormData>({
+    resolver: zodResolver(newCheckoutValidationSchema),
+  })
+
+  const { handleSubmit, register, formState } = newCheckoutFormMethods
+
+  // const { register } = useFormContext()
+
+  // function handleCreateNewOrder(event: FormEvent) {
+  //   event.preventDefault()
+  //   console.log('Submeteu o formulário')
+  // }
+
+  if (formState.errors) {
+    console.log(formState.errors)
+  }
+
+  function handleCreateNewOrder(data: CheckoutFormData) {
+    updateClientData(data)
   }
 
   function handleUpdatePaymentMethod(method: payType) {
     updatePaymentMethod(method)
   }
 
+  function handleChangingField(e: ChangeEvent<HTMLInputElement>) {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    })
+  }
+
   return (
     <CheckoutContainer>
-      <form onSubmit={handleCreateNewOrder}>
+      <form onSubmit={handleSubmit(handleCreateNewOrder)} action="">
         <main>
           <header>Complete seu pedido</header>
           <AddressSection>
@@ -55,33 +98,68 @@ export function Checkout() {
             </div>
 
             <div>
-              <CEPInput placeholder="CEP" autoComplete="new-password" />
-              <StreetInput placeholder="Rua" autoComplete="new-password" />
-              <div>
-                <NumberInput placeholder="Número" autoComplete="new-password" />
-                <ComplementInput
-                  value={''}
-                  placeholder="Complemento Opcional"
-                  autoComplete="new-password"
+              <FormProvider {...newCheckoutFormMethods}>
+                <CEPInput
+                  id="zipCode"
+                  placeholder="CEP"
+                  value={formData.zipCode}
+                  {...register('zipCode', {
+                    onChange: handleChangingField,
+                  })}
                 />
-              </div>
-              <div>
-                <DistrictInput
-                  value={''}
-                  placeholder="Bairro"
-                  autoComplete="new-password"
+                <StreetInput
+                  id="street"
+                  placeholder="Rua"
+                  value={formData.street}
+                  {...register('street', {
+                    onChange: handleChangingField,
+                  })}
                 />
-                <CityInput
-                  value={''}
-                  placeholder="Cidade"
-                  autoComplete="new-password"
-                />
-                <StateInput
-                  value={''}
-                  placeholder="UF"
-                  autoComplete="new-password"
-                />
-              </div>
+                <div>
+                  <NumberInput
+                    id="number"
+                    placeholder="Número"
+                    value={formData.number}
+                    {...register('number', {
+                      onChange: handleChangingField,
+                    })}
+                  />
+                  <ComplementInput
+                    id="complement"
+                    placeholder="Complemento Opcional"
+                    value={formData.complement}
+                    {...register('complement', {
+                      onChange: handleChangingField,
+                    })}
+                  />
+                </div>
+                <div>
+                  <DistrictInput
+                    id="district"
+                    placeholder="Bairro"
+                    value={formData.district}
+                    {...register('district', {
+                      onChange: handleChangingField,
+                    })}
+                  />
+                  <CityInput
+                    id="city"
+                    placeholder="Cidade"
+                    value={formData.city}
+                    {...register('city', {
+                      onChange: handleChangingField,
+                    })}
+                  />
+                  <StateInput
+                    id="state"
+                    placeholder="UF"
+                    value={formData.state}
+                    {...register('state', {
+                      onChange: handleChangingField,
+                    })}
+                  />
+                </div>
+              </FormProvider>
             </div>
           </AddressSection>
 

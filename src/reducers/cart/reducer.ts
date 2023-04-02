@@ -1,6 +1,7 @@
 import produce from 'immer'
 
 import { ActionTypes } from './actions'
+import { CheckoutFormData } from '../../pages/Checkout'
 
 export type payType = 'credit' | 'debit' | 'money'
 export interface CartItem {
@@ -11,6 +12,7 @@ export interface CartItem {
 interface CartState {
   cartItems: CartItem[]
   payMethod: payType
+  clientData: CheckoutFormData
 }
 
 export function cartReducer(state: CartState, action: any) {
@@ -38,6 +40,10 @@ export function cartReducer(state: CartState, action: any) {
     case ActionTypes.UPDATE_PAYMENT_METHOD:
       return produce(state, (draft) => {
         draft.payMethod = action.payload.payMethod
+      })
+    case ActionTypes.UPDATE_CLIENT_DATA:
+      return produce(state, (draft) => {
+        draft.clientData = action.payload.clientData
       })
     default:
       return state
