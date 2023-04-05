@@ -9,4 +9,6 @@ export enum ActionTypes {
   UPDATE_PAYMENT_METHOD = 'UPDATE_PAYMENT_METHOD',
   // eslint-disable-next-line no-unused-vars
   UPDATE_CLIENT_DATA = 'UPDATE_CLIENT_DATA',
+  // eslint-disable-next-line no-unused-vars
+  CLEAR_CART = 'CLEAR_CART',
 }

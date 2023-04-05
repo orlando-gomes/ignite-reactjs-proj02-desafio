@@ -1,39 +1,26 @@
-import { ChangeEvent, useContext, useState } from 'react'
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { FormProvider, useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from '@phosphor-icons/react'
+import { Bank, CreditCard, CurrencyDollar, Money } from '@phosphor-icons/react'
 
-import {
-  AddressSection,
-  AddressTopText,
-  CEPInput,
-  CheckoutContainer,
-  CityInput,
-  ComplementInput,
-  DistrictInput,
-  NumberInput,
-  PayButton,
-  PaySection,
-  PayTitle,
-  StateInput,
-  StreetInput,
-} from './styles'
+import { CheckoutContainer, PayButton, PaySection, PayTitle } from './styles'
 
 import { ConfirmSection } from './ConfirmSection'
 import { CartContext } from '../../contexts/CartContext'
 import { payType } from '../../reducers/cart/reducer'
+import { AddressSection } from './AddressSection'
+
+const zipRegex = '[1-9]{1}[0-9]{4}-[0-9]{3}'
 
 const newCheckoutValidationSchema = zod.object({
-  zipCode: zod.string().min(1, 'Informe o CEP'),
+  zipCode: zod
+    .string()
+    .min(1, 'Informe o CEP')
+    .regex(new RegExp(zipRegex), 'CEP invalido'),
   street: zod.string().min(5, 'Informe a rua'),
   number: zod.string().nonempty('Informe um número válido'),
   complement: zod.string().optional(),
@@ -44,7 +31,7 @@ const newCheckoutValidationSchema = zod.object({
 
 export type CheckoutFormData = zod.infer<typeof newCheckoutValidationSchema>
 
-export function Checkout() {
+export function Checkout(props: any) {
   const { clientData, payMethod, updatePaymentMethod, updateClientData } =
     useContext(CartContext)
 
@@ -54,9 +41,9 @@ export function Checkout() {
     resolver: zodResolver(newCheckoutValidationSchema),
   })
 
-  const { handleSubmit, register, formState } = newCheckoutFormMethods
+  const { handleSubmit, formState } = newCheckoutFormMethods
 
-  // const { register } = useFormContext()
+  const navigate = useNavigate()
 
   // function handleCreateNewOrder(event: FormEvent) {
   //   event.preventDefault()
@@ -69,17 +56,15 @@ export function Checkout() {
 
   function handleCreateNewOrder(data: CheckoutFormData) {
     updateClientData(data)
+    navigate('/success')
   }
 
   function handleUpdatePaymentMethod(method: payType) {
     updatePaymentMethod(method)
   }
 
-  function handleChangingField(e: ChangeEvent<HTMLInputElement>) {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    })
+  function functionToSetFormData(data: CheckoutFormData) {
+    setFormData(data)
   }
 
   return (
@@ -87,82 +72,12 @@ export function Checkout() {
       <form onSubmit={handleSubmit(handleCreateNewOrder)} action="">
         <main>
           <header>Complete seu pedido</header>
-          <AddressSection>
-            <div>
-              <MapPinLine size={22} />
-
-              <AddressTopText>
-                <div>Endereço de entrega</div>
-                <div>Informe o endereço onde deseja receber o seu pedido</div>
-              </AddressTopText>
-            </div>
-
-            <div>
-              <FormProvider {...newCheckoutFormMethods}>
-                <CEPInput
-                  id="zipCode"
-                  placeholder="CEP"
-                  value={formData.zipCode}
-                  {...register('zipCode', {
-                    onChange: handleChangingField,
-                  })}
-                />
-                <StreetInput
-                  id="street"
-                  placeholder="Rua"
-                  value={formData.street}
-                  {...register('street', {
-                    onChange: handleChangingField,
-                  })}
-                />
-                <div>
-                  <NumberInput
-                    id="number"
-                    placeholder="Número"
-                    value={formData.number}
-                    {...register('number', {
-                      onChange: handleChangingField,
-                    })}
-                  />
-                  <ComplementInput
-                    id="complement"
-                    placeholder="Complemento Opcional"
-                    value={formData.complement}
-                    {...register('complement', {
-                      onChange: handleChangingField,
-                    })}
-                  />
-                </div>
-                <div>
-                  <DistrictInput
-                    id="district"
-                    placeholder="Bairro"
-                    value={formData.district}
-                    {...register('district', {
-                      onChange: handleChangingField,
-                    })}
-                  />
-                  <CityInput
-                    id="city"
-                    placeholder="Cidade"
-                    value={formData.city}
-                    {...register('city', {
-                      onChange: handleChangingField,
-                    })}
-                  />
-                  <StateInput
-                    id="state"
-                    placeholder="UF"
-                    value={formData.state}
-                    {...register('state', {
-                      onChange: handleChangingField,
-                    })}
-                  />
-                </div>
-              </FormProvider>
-            </div>
-          </AddressSection>
-
+          <FormProvider {...newCheckoutFormMethods}>
+            <AddressSection
+              formData={formData}
+              functionToSetFormData={functionToSetFormData}
+            />
+          </FormProvider>
           <PaySection>
             <div>
               <CurrencyDollar size={22} />

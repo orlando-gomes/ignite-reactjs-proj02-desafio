@@ -11,6 +11,7 @@ interface CartContextType {
   updateCartItem: (item: CartItem) => void
   findCartItem: (item: CartItem) => CartItem | null
   deleteCartItem: (itemId: number) => void
+  clearCart: () => void
   updatePaymentMethod: (method: payType) => void
   updateClientData: (data: CheckoutFormData) => void
 }
@@ -68,6 +69,12 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch({ type: ActionTypes.DELETE_CART_ITEM, payload: { itemId } })
   }
 
+  function clearCart() {
+    dispatch({
+      type: ActionTypes.CLEAR_CART,
+    })
+  }
+
   function updatePaymentMethod(method: payType) {
     dispatch({
       type: ActionTypes.UPDATE_PAYMENT_METHOD,
@@ -92,6 +99,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         updateCartItem,
         findCartItem,
         deleteCartItem,
+        clearCart,
         updatePaymentMethod,
         updateClientData,
       }}

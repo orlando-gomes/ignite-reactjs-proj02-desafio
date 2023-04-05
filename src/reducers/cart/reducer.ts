@@ -37,6 +37,10 @@ export function cartReducer(state: CartState, action: any) {
           return item.id !== action.payload.itemId
         })
       })
+    case ActionTypes.CLEAR_CART:
+      return produce(state, (draft) => {
+        draft.cartItems = [] as CartItem[]
+      })
     case ActionTypes.UPDATE_PAYMENT_METHOD:
       return produce(state, (draft) => {
         draft.payMethod = action.payload.payMethod
